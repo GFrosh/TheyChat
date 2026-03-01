@@ -34,20 +34,24 @@ function Chat({ username, room }) {
 
   return (
     <div>
-      <div>
-        {messageList.map((msg, index) => (
-          <div key={index}>
-            <strong>{msg.author}</strong>: {msg.message} ({msg.time})
-          </div>
-        ))}
-      </div>
+		<h1>TheyChat</h1>
+		<h2>Current User: {username}!</h2>
+		<h2>Room: {room}</h2>
+		<h3>Messages:</h3>
+		<div>
+			{messageList.map((msg, index) => (
+			<div key={index}>
+				<strong>{msg.author}</strong>: {msg.message} ({msg.time})
+			</div>
+			))}
+		</div>
 
-      <input
-        value={message}
-        placeholder="Message..."
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button onClick={sendMessage}>Send</button>
+		<input
+			value={message}
+			placeholder="Message..."
+			onChange={(e) => setMessage(e.target.value)}
+		/>
+		<button onClick={sendMessage}>Send</button>
     </div>
   );
 }

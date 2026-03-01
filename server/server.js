@@ -15,21 +15,39 @@ const io = new Server(server, {
   },
 });
 
+// In-memory store for active rooms
+const chat = {
+	rooms: [],
+	users: []
+};
+
+
 io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
+  	console.log("User connected:", socket.id);
 
-  socket.on("join_room", (room) => {
-    socket.join(room);
-    console.log(`User joined room: ${room}`);
-  });
+	socket.on("join_room", (room) => {
+		if (!chat.rooms.includes(room)) {
+			chat.rooms.push(room);
+		}
+		socket.join(room);
+		console.log(`User joined room: ${room}`);
+	});
 
-  socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data);
-  });
+	socket.on("send_message", (data) => {
+		socket.to(data.room).emit("receive_message", data);
+	});
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-  });
+	socket.on("disconnect", () => {
+		console.log("User disconnected:", socket.id);
+	});
+});
+
+// Endpoint to get active rooms
+app.get("/rooms", (req, res) => {
+  	res.json(chat.rooms);
+});
+app.get("/stats", (req, res) => {
+  	res.json(chat);
 });
 
 server.listen(3001, () => {

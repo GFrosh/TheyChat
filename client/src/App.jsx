@@ -1,36 +1,21 @@
-import { useState } from "react";
-import Chat from "./Chat";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import JoinPage from "./pages/JoinPage";
+import ChatPage from "./pages/ChatPage";
+import { FaHome } from "react-icons/fa";
 
 function App() {
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("");
-  const [showChat, setShowChat] = useState(false);
-
-  const joinRoom = () => {
-    if (username !== "" && room !== "") {
-      setShowChat(true);
-    }
-  };
-
   return (
-    <div>
-      {!showChat ? (
-        <div>
-          <h2>Join Chat</h2>
-          <input
-            placeholder="Username"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            placeholder="Room ID"
-            onChange={(e) => setRoom(e.target.value)}
-          />
-          <button onClick={joinRoom}>Join</button>
-        </div>
-      ) : (
-        <Chat username={username} room={room} />
-      )}
-    </div>
+    <BrowserRouter>
+	  	<h1>
+			<a href="/">
+				<FaHome />
+			</a>
+		</h1>
+      <Routes>
+        <Route path="/" element={<JoinPage />} />
+        <Route path="/chat/:room" element={<ChatPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
